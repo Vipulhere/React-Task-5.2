@@ -18,7 +18,7 @@ function Palindrome(props) {
     }
   }
   return (
-    <Button onClick={handleclick} mb="5px" colorScheme="blue">
+    <Button onClick={handleclick} mb="5px" colorScheme="teal" variant="outline">
       Palindrome String
     </Button>
   );

@@ -27,7 +27,7 @@ function Prime(props) {
     }
   }
   return (
-    <Button onClick={handleclick} mb="5px" colorScheme="blue">
+    <Button onClick={handleclick} mb="5px" colorScheme="teal" variant="outline">
       Prime Number
     </Button>
   );

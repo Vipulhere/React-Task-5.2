@@ -1,14 +1,19 @@
 import {
   Box,
+  CloseButton,
   Container,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+
 import { useState } from "react";
+import { SlideFade } from "@chakra-ui/react";
 import "./App.css";
 import Evenodd from "./components/evenodd";
 import Palindrome from "./components/palindrome";
@@ -16,8 +21,10 @@ import Prime from "./components/prime";
 
 function App() {
   const toast = useToast();
+  const { isOpen, onToggle } = useDisclosure();
   const [error, seterror] = useState(false);
   const [errormessage, seterrormessage] = useState("");
+  const [output, setoutput] = useState("");
   function handlepalindrome(p) {
     if (p === "error") {
       seterrormessage(
@@ -26,20 +33,18 @@ function App() {
       seterror(true);
     } else {
       if (p) {
-        toast({
-          title: `${input} is a Palindrome String.`,
-          status: "success",
-          isClosable: true,
-          position: "top",
-        });
+        setoutput(`${input} is a Palindrome String.`);
+        if (isOpen) {
+        } else {
+          onToggle();
+        }
         seterror(false);
       } else {
-        toast({
-          title: `${input} is not a Palindrome String.`,
-          status: "error",
-          isClosable: true,
-          position: "top",
-        });
+        setoutput(`${input} is not a Palindrome String.`);
+        if (isOpen) {
+        } else {
+          onToggle();
+        }
         seterror(false);
       }
     }
@@ -58,20 +63,18 @@ function App() {
       }
     } else {
       if (even) {
-        toast({
-          title: `${input} is a Even Number.`,
-          status: "info",
-          isClosable: true,
-          position: "top",
-        });
+        setoutput(`${input} is a Even Number.`);
+        if (isOpen) {
+        } else {
+          onToggle();
+        }
         seterror(false);
       } else {
-        toast({
-          title: `${input} is a Odd Number.`,
-          status: "info",
-          isClosable: true,
-          position: "top",
-        });
+        setoutput(`${input} is a Odd Number.`);
+        if (isOpen) {
+        } else {
+          onToggle();
+        }
         seterror(false);
       }
     }
@@ -90,12 +93,11 @@ function App() {
       }
     } else {
       if (parseInt(input) === 1) {
-        toast({
-          title: `1 is neither prime nor a composite number`,
-          status: "info",
-          isClosable: true,
-          position: "top",
-        });
+        setoutput(`1 is neither prime nor a composite number`);
+        if (isOpen) {
+        } else {
+          onToggle();
+        }
         seterror(false);
       } else if (parseInt(input) < 1) {
         toast({
@@ -106,20 +108,18 @@ function App() {
         });
         seterror(false);
       } else if (prime) {
-        toast({
-          title: `${input} is a Prime Number.`,
-          status: "success",
-          isClosable: true,
-          position: "top",
-        });
+        setoutput(`${input} is a Prime Number.`);
+        if (isOpen) {
+        } else {
+          onToggle();
+        }
         seterror(false);
       } else {
-        toast({
-          title: `${input} is not a Prime Number.`,
-          status: "error",
-          isClosable: true,
-          position: "top",
-        });
+        setoutput(`${input} is not a Prime Number.`);
+        if (isOpen) {
+        } else {
+          onToggle();
+        }
         seterror(false);
       }
     }
@@ -134,38 +134,63 @@ function App() {
 
   return (
     <>
-      <Container pt="120px">
-        <FormControl isInvalid={error}>
-          <FormLabel>
-            Enter a number/string to check whether it is Even/Odd or Prime
-            number or Palindrome string.
-          </FormLabel>
-          <Input type="text" value={input} onChange={handleInputChange} />
-          {!error ? (
-            <FormHelperText>
-              Note: String can contain alphabets, numbers and special
-              characters. <br /> Example: "#@1wow1@#" is valid string.
-            </FormHelperText>
-          ) : (
-            <FormErrorMessage>{errormessage}</FormErrorMessage>
-          )}
-          <Box mt="10px">
-            <Evenodd
-              iseven={handleeven}
-              number={
-                /[a-zA-Z]/.test(input) ? parseInt("lol") : parseInt(input)
-              }
-            />{" "}
-            <Prime
-              isprime={handleprime}
-              number={
-                /[a-zA-Z]/.test(input) ? parseInt("lol") : parseInt(input)
-              }
-            />{" "}
-            <Palindrome ispalindrome={handlepalindrome} input={input} />
-          </Box>
-        </FormControl>
-      </Container>
+      <Box id="img" h="100vh" w="100vw">
+        <Container pt="120px">
+          <Heading color="teal.500" mb={10}>
+            Even/Odd, Prime Number, Palindrome String Checker
+          </Heading>
+          <FormControl isInvalid={error}>
+            <FormLabel color="teal.800">
+              Enter a number/string to check whether it is Even/Odd or Prime
+              number or Palindrome string.
+            </FormLabel>
+            <Input
+              placeholder="Input"
+              type="text"
+              value={input}
+              onChange={handleInputChange}
+            />
+            {!error ? (
+              <FormHelperText>
+                Note: String can contain alphabets, numbers and special
+                characters. <br /> Example: "#@1wow1@#" is valid string.
+              </FormHelperText>
+            ) : (
+              <FormErrorMessage>{errormessage}</FormErrorMessage>
+            )}
+            <Box mt="30px">
+              <Evenodd
+                iseven={handleeven}
+                number={
+                  /[a-zA-Z]/.test(input) ? parseInt("lol") : parseInt(input)
+                }
+              />{" "}
+              <Prime
+                isprime={handleprime}
+                number={
+                  /[a-zA-Z]/.test(input) ? parseInt("lol") : parseInt(input)
+                }
+              />{" "}
+              <Palindrome ispalindrome={handlepalindrome} input={input} />
+            </Box>
+            <SlideFade in={isOpen} offsetY="20px">
+              <Box
+                p="40px"
+                color="white"
+                mt="4"
+                bg="teal.500"
+                rounded="md"
+                shadow="md"
+                id="output"
+              >
+                <CloseButton id="close" onClick={onToggle} />
+                <strong>Output:</strong> <br />
+                {output}
+              </Box>
+            </SlideFade>
+          </FormControl>
+        </Container>
+      </Box>
     </>
   );
 }
